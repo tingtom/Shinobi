@@ -445,3 +445,7 @@ ul.msg_list li .message {
     margin-left: 10px;
 }
 /* End of custom table sorter */
+.version {
+    text-align: center;
+    margin-bottom: 5px;
+}
