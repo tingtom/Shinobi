@@ -2309,7 +2309,7 @@ module.exports = function(s,config,lang){
                    {
                       "name": "detail=detector_webhook",
                       "field": "Webhook",
-                      "description": "Send a GET request to a URL with some values from the event.",
+                      "description": "Send a request to a URL with some values from the event.",
                       "default": "0",
                       "example": "",
                       "selector": "h_det_web",
@@ -2361,6 +2361,26 @@ module.exports = function(s,config,lang){
                           }
                        ]
                    },
+                   {
+                    "name": "detail=detector_webhook_type",
+                    "field": lang['Webhook Type'],
+                    "description": "",
+                    "default": "body",
+                    "example": "",
+                    "form-group-class": "h_det_web_input h_det_web_1",
+                    "form-group-class-pre-layer": "h_det_input h_det_1",
+                    "fieldType": "select",
+                    "possible": [
+                        {
+                           "name": `body (${lang.Default})`,
+                           "value": "body"
+                        },
+                        {
+                           "name": "query",
+                           "value": "query"
+                        }
+                     ]
+                 },
                    {
                       "name": "detail=detector_command_enable",
                       "field": lang['Command on Trigger'],

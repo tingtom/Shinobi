@@ -314,10 +314,26 @@ module.exports = function(s,config,lang){
             })
 
             if(filter.webhook && currentConfig.detector_webhook === '1'){
-                var detector_webhook_url = addEventDetailsToString(d,currentConfig.detector_webhook_url)
-                var webhookMethod = currentConfig.detector_webhook_method
-                if(!webhookMethod || webhookMethod === '')webhookMethod = 'GET'
-                request(detector_webhook_url,{method: webhookMethod,encoding:null},function(err,data){
+                var detector_webhook_url = currentConfig.detector_webhook_url
+                var detector_webhook_type = currentConfig.detector_webhook_type
+                //add query string parameters to the url
+                if(detector_webhook_type === 'query'){
+                    detector_webhook_url = addEventDetailsToString(d,detector_webhook_url)
+                }
+
+                var options = {encoding:null};
+                options.method = currentConfig.detector_webhook_method
+                if(!options.method || options.method === '') options.method = 'GET'
+
+                if(detector_webhook_type === 'body')
+                {
+                    options.json = true
+                    options.body = {time:d.currentTime,region:d.details.name,snapshot:s.dir.streams+'/'+d.ke+'/'+d.id+'/s.jpg',monitorId:d.id,groupKey:d.ke,details:d.details};
+                }
+
+                console.log(JSON.stringify(options.body));
+
+                request(detector_webhook_url,options,function(err,data){
                     if(err){
                         s.userLog(d,{type:lang["Event Webhook Error"],msg:{error:err,data:data}})
                     }

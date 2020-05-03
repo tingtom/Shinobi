@@ -527,6 +527,7 @@
    "Webhook": "Webhook",
    "Event Webhook Error": "Event Webhook Error",
    "Webhook URL": "Webhook URL",
+   "Webhook Type": "Webhook Type",
    "Command on Trigger": "Command on Trigger",
    "Command": "Command",
    "Allow Next Command": "Allow Next Command <small>in Minutes</small>",
