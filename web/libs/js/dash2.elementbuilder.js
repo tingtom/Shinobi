@@ -187,6 +187,9 @@ $.ccio.tm=function(x,d,z,user){
                 if(!$.ccio.permissionCheck('monitor_edit',d.mid)){
                     delete(buttons["Monitor Settings"])
                 }
+                if(k.d.record_timelapse !== "1"){
+                    delete(buttons["Time-lapse"])
+                }
                 $.each(buttons,function(n,v){
                     tmp+='<a class="btn btn-'+v.class+'" '+v.attr+' title="'+v.label+'"><i class="fa fa-'+v.icon+'"></i></a>'
                 })
