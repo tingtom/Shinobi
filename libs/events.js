@@ -3,6 +3,8 @@ var execSync = require('child_process').execSync;
 var exec = require('child_process').exec;
 var spawn = require('child_process').spawn;
 var request = require('request');
+var fs = require('fs');
+
 module.exports = function(s,config,lang){
     var addEventDetailsToString = function(eventData,string,addOps){
         //d = event data
@@ -328,10 +330,18 @@ module.exports = function(s,config,lang){
                 if(detector_webhook_type === 'body')
                 {
                     options.json = true
-                    options.body = {time:d.currentTime,region:d.details.name,snapshot:s.dir.streams+'/'+d.ke+'/'+d.id+'/s.jpg',monitorId:d.id,groupKey:d.ke,details:d.details};
-                }
+                    options.body = {time:d.currentTime,region:d.details.name,monitorId:d.id,groupKey:d.ke,details:d.details};
 
-                console.log(JSON.stringify(options.body));
+                    //Write to snapshot file
+                    var writeStream = fs.createWriteStream(s.dir.snapshots + '/' + d.currentTimestamp + '.jpg');
+
+                    var dir = s.dir.streams+'/'+d.ke+'/'+d.id+'/s.jpg';
+                    if (fs.existsSync(dir)){
+                        fs.createReadStream(dir).pipe(writeStream);
+                    }else{
+                        fs.createReadStream(config.defaultMjpeg).pipe(writeStream);
+                    }
+                }
 
                 request(detector_webhook_url,options,function(err,data){
                     if(err){

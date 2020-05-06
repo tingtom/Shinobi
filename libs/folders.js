@@ -18,10 +18,12 @@ module.exports = function(s,config,lang){
         }
     }
     if(!config.videosDir){config.videosDir=s.mainDirectory+'/videos/'}
+    if(!config.snapshotsDir){config.snapshotsDir=s.mainDirectory+'/snapshots/'}
     if(!config.binDir){config.binDir=s.mainDirectory+'/fileBin/'}
     if(!config.addStorage){config.addStorage=[]}
     s.dir={
         videos: s.checkCorrectPathEnding(config.videosDir),
+        snapshots: s.checkCorrectPathEnding(config.snapshotsDir),
         streams: s.checkCorrectPathEnding(config.streamDir),
         fileBin: s.checkCorrectPathEnding(config.binDir),
         addStorage: config.addStorage,
