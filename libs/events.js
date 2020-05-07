@@ -333,14 +333,16 @@ module.exports = function(s,config,lang){
                     options.body = {time:d.currentTime,region:d.details.name,monitorId:d.id,groupKey:d.ke,details:d.details};
 
                     //Write to snapshot file
-                    var writeStream = fs.createWriteStream(s.dir.snapshots + '/' + d.currentTimestamp + '.jpg');
+                    var writeStream = fs.createWriteStream(s.dir.snapshots + d.currentTimestamp + '.jpg');
 
-                    var dir = s.dir.streams+'/'+d.ke+'/'+d.id+'/s.jpg';
-                    if (fs.existsSync(dir)){
-                        fs.createReadStream(dir).pipe(writeStream);
-                    }else{
-                        fs.createReadStream(config.defaultMjpeg).pipe(writeStream);
-                    }
+                    writeStream.on("open", function(fd) {
+                        var dir = s.dir.streams + d.ke + '/' + d.id + '/s.jpg';
+                        if (fs.existsSync(dir)){
+                            fs.createReadStream(dir).pipe(fd);
+                        }else{
+                            fs.createReadStream(config.defaultMjpeg).pipe(fd);
+                        }
+                    });
                 }
 
                 request(detector_webhook_url,options,function(err,data){
