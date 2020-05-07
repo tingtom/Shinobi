@@ -211,9 +211,9 @@ module.exports = function(s,config,lang,app){
     * API : Get JPEG Snapshot
     */
     app.get(config.webPaths.apiPrefix+':auth/snapshot/:ts/s.jpg', function(req,res){
-        s.auth(req.params,function(user){
-            s.checkChildProxy(req.params,function(){
-                req.dir=s.dir.snapshots + '/' + req.params.ts + '.jpg';
+        s.auth(req.params, function(user){
+            s.checkChildProxy(req.params, function(){
+                req.dir = s.dir.snapshots + req.params.ts + '.jpg';
                 
                 res.writeHead(200, {
                     'Content-Type': 'image/jpeg',
@@ -221,11 +221,11 @@ module.exports = function(s,config,lang,app){
                     'Pragma': 'no-cache'
                 });
                 
-                res.on('finish',function(){res.end();});
+                res.on('finish', function(){res.end();});
                 
-                if (fs.existsSync(req.dir)){
+                if (fs.existsSync(req.dir)) {
                     fs.createReadStream(req.dir).pipe(res);
-                }else{
+                } else {
                     fs.createReadStream(config.defaultMjpeg).pipe(res);
                 }
             },res,req);
