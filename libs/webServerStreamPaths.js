@@ -208,27 +208,25 @@ module.exports = function(s,config,lang,app){
         },res,req);
     });
     /**
-    * API : Get JPEG Snapshot
+    * API : Get JPEG Snapshot from file
     */
     app.get(config.webPaths.apiPrefix+':auth/snapshot/:ts/s.jpg', function(req,res){
         s.auth(req.params, function(user){
-            s.checkChildProxy(req.params, function(){
-                req.dir = s.dir.snapshots + req.params.ts + '.jpg';
-                
-                res.writeHead(200, {
-                    'Content-Type': 'image/jpeg',
-                    'Cache-Control': 'no-cache',
-                    'Pragma': 'no-cache'
-                });
-                
-                res.on('finish', function(){res.end();});
-                
-                if (fs.existsSync(req.dir)) {
-                    fs.createReadStream(req.dir).pipe(res);
-                } else {
-                    fs.createReadStream(config.defaultMjpeg).pipe(res);
-                }
-            },res,req);
+            req.dir = s.dir.snapshots + req.params.ts + '.jpg';
+            
+            res.writeHead(200, {
+                'Content-Type': 'image/jpeg',
+                'Cache-Control': 'no-cache',
+                'Pragma': 'no-cache'
+            });
+            
+            res.on('finish', function(){res.end();});
+            
+            if (fs.existsSync(req.dir)) {
+                fs.createReadStream(req.dir).pipe(res);
+            } else {
+                fs.createReadStream(config.defaultMjpeg).pipe(res);
+            }
         },res,req);
     });
     /**
