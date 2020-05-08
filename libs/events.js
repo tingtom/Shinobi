@@ -335,14 +335,12 @@ module.exports = function(s,config,lang){
                     //Write to snapshot file
                     var writeStream = fs.createWriteStream(s.dir.snapshots + d.currentTimestamp + '.jpg');
 
-                    writeStream.on("open", function(fd) {
-                        var dir = s.dir.streams + d.ke + '/' + d.id + '/s.jpg';
-                        if (fs.existsSync(dir)){
-                            fs.createReadStream(dir).pipe(fd);
-                        }else{
-                            fs.createReadStream(config.defaultMjpeg).pipe(fd);
-                        }
-                    });
+                    var dir = s.dir.streams + d.ke + '/' + d.id + '/s.jpg';
+                    if (fs.existsSync(dir)){
+                        fs.createReadStream(dir).pipe(writeStream);
+                    }else{
+                        fs.createReadStream(config.defaultMjpeg).pipe(writeStream);
+                    }
                 }
 
                 request(detector_webhook_url,options,function(err,data){
